@@ -1,0 +1,117 @@
+.confirm{
+    padding: 38px 0;
+    background: #f5f5f5;
+}
+
+.confirm .confirm-order{
+    padding-left: 183px;
+    position: relative;
+}
+
+.confirm-order i{
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    font-size: 80px;
+    color: #83c44e;
+    text-align: center;
+    border: 2px solid #83c44e;
+    border-radius: 42px;
+    overflow: hidden;
+}
+.confirm-section{
+    padding: 30px 48px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    color: #424242;
+}
+.confirm-section .order-info{
+    padding: 20px 0;
+}
+.confirm-section .order-info .info-time span{
+    margin: 0 5px;
+    color: #ff6700;
+}
+.confirm-section .order-info .info-address{
+    color: #616161;
+}
+.confirm-order .order-total{
+    float: right;
+    text-align: right;
+}
+.confirm-order .order-total p{
+    margin-bottom: 10px;
+    color: #757575;
+}
+.confirm-order .order-total span{
+    color: #ff6700;
+    font-size: 14px;
+}
+.confirm-order .order-total span em{
+    font-style: normal;
+    font-size: 24px;
+}
+.confirm-order .order-total > a{
+    color: #757575;
+    text-decoration: none;
+}
+.order-detail{
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.order-detail li{
+    line-height: 24px;
+    margin-bottom: 8px;
+    color: #333;
+}
+.order-detail li .label{
+    float: left;
+    width: 85px;
+}
+.order-detail li .content{
+    float: left;
+}
+
+.confirm-payment .payment-title{
+    height: 50px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 18px;
+}
+.confirm-payment .payment-list li{
+    float: left;
+    width: 174px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 14px;
+    margin-bottom: 14px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all .4s;
+}
+.confirm-payment .payment-list li:hover{
+    border-color: #ff6700;
+}
+.confirm-qrcode {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    /* 居中 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#qrcode {
+    background: white;
+    padding: 20px;
+}

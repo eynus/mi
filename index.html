@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>小米首页</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+</head>
+
+<body>
+
+    <div class="hero">
+        <div class="container hero-container">
+            <div class="hero-banner">
+                <div class="banner-ui">
+                    <!-- <a href="#"><img src="img/banner1.jpg" alt=""></a> -->
+                </div>
+                <div class="banner-control">
+                    <div class="control-page">
+
+                        <!-- <a href="">2</a> -->
+                    </div>
+                    <div class="control-rl">
+                        <a href="#" class="rl-prev">上一张</a>
+                        <a href="#" class="rl-next">下一张</a>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-sub clearfix">
+                <div class="sub-tool">
+                    <ul class="clearfix">
+                        <li><a href="#"><i class="iconfont">&#xe908;</i>选购手机</a></li>
+                        <li><a href="#"><i class="iconfont">&#xe905;</i>企业团购</a></li>
+                        <li><a href="#"><i class="iconfont">&#xe902;</i>F码通道</a></li>
+                        <li><a href="#"><i class="iconfont">&#xe906;</i>米粉卡</a></li>
+                        <li><a href="#"><i class="iconfont">&#xe904;</i>以旧换新</a></li>
+                        <li><a href="#"><i class="iconfont">&#xe907;</i>话费充值</a></li>
+                    </ul>
+                </div>
+                <div class="sub-promo">
+                    <ul>
+                        <li class="first"><a href="#"><img src="img/promo1.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="img/promo2.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="img/promo3.jpg" alt=""></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="container">
+            <div class="main-hd">
+                <h2></h2>
+            </div>
+            <div class="main-bd clearfix">
+                <div class="bd-ad">
+                    <ul class="clearfix">
+                        <li><a href="#"><img src="" alt=""></a></li>
+                    </ul>
+                </div>
+                <div class="bd-product clearfix">
+                    <ul class="clearfix">
+                        <li class="tpl-body-item">
+                            <div>
+                                <div class="face"><a href="#"><img src="" alt=""></a></div>
+                                <h3 class="title"><a href="#"></a></h3>
+                                <p class="desc"></p>
+                                <p class="price">
+                                    <span class="num"></span>元
+                                    <del><span class="num"></span>元</del>
+                                </p>
+                                <div class="flag"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/carousel.js"></script>
+    <script>
+
+        $(function () {
+
+            //请求轮播图数据
+            $.apiGet('/menu?type=carousel').done(function (result) {
+                // console.log(result);
+                const carousel = $('.hero-banner');
+                const carouselContent = carousel.find('.banner-ui')
+                const carouselPagination = carousel.find('.control-page');
+                let slider, curIndex = 0, dom0;
+                const len = result.length;
+                for (const idx in result) {
+
+                    slider = result[idx];
+                    // <a href="#"><img src="img/banner1.jpg" alt=""></a>
+                    const dom = $('<a>').attr('href', slider.url);
+                    $('<img>').attr('src', slider.img).appendTo(dom);
+                    carouselContent.append(dom);
+                    //第一张备份
+                    if (idx == 0) {
+                        dom0 = dom.clone();
+                    }
+                    //小点点
+                    // <a href="" class="active">1</a>
+                    $('<a>').text(idx).appendTo(carouselPagination);
+                }
+                //为了轮播效果，再加一张在最后
+                carouselContent.append(dom0);
+                //显示第一张
+                carouselContent.children().first().addClass('show');
+                carouselPagination.children().first().addClass('active');
+
+                new Carousel($('.control-rl a'), 'rl-next', carouselPagination, curIndex, 1226, len, $('.banner-ui'), 700, 4000)
+
+
+
+
+
+            })
+
+
+            // 请求推荐商品数据
+            $.apiGet('/menu?type=index').done(function (result) {
+                // console.log(result);
+                const container = $('.main .container'),
+                    headTpl = $('.main-hd').remove(),
+                    bodyTpl = $('.main-bd').remove(),
+                    itemTpl = bodyTpl.find('.tpl-body-item').remove();
+                let headClone, bodyClone, itemClone, bodyUl, ad;
+
+                for (const group of result) {
+                    //head部分模板克隆
+                    headClone = headTpl.clone();
+                    headClone.find('h2').text(group.name);
+                    //body部分模板克隆
+                    bodyClone = bodyTpl.clone();
+                    //设置左侧广告图、
+                    ad = bodyClone.find('.bd-ad');
+
+                    ad.find('a').attr('href', group.url);
+                    ad.find('img').attr('src', group.img);
+                    bodyUl = bodyClone.find('.bd-product ul');
+                    //里面的小卡片组
+                    if (group.list) {
+
+                        for (const card of group.list) {
+                            itemClone = itemTpl.clone();
+                            //设置card的链接，图片，
+                            itemClone.find('.face a').attr('href', $.productLink(card.pid)).find('img').attr('src', card.img);
+                            //设置文字
+                            itemClone.find('.title a').text(card.name);
+                            itemClone.find('.desc ').text(card.desc);
+                            itemClone.find('.price>.num').text(card.price);
+                            if (+card.market_price > 0) {//确保市场价格>0才显示
+                                itemClone.find('.price del>.num').text(card.market_price);
+                            } else {
+                                itemClone.find('.price del').remove();
+                            }
+                            itemClone.find('.flag').text(card.flag).css('background-color', '#83c44e')
+                            //插入ul
+                            itemClone.appendTo(bodyUl);
+                        }
+                        if (group.list.length < 8) {//小卡片填充满
+                            for (let i = group.list.length; i < 8; i++) {
+                                itemClone = itemTpl.clone();
+                                itemClone.find('.face a').attr('href', 'javascript:;').find('img').attr('src', 'https://dummyimage.com/160x160/eee/ff5600&text=card');
+                                itemClone.find('.price').text('');
+                                itemClone.appendTo(bodyUl);
+                            }
+                        }
+                    } else {//大图填充满
+                        $('<img>').attr('src', 'https://dummyimage.com/998x614/eee/ff5600&text=%E6%B2%A1%E6%9C%89%E6%95%B0%E6%8D%AE%E9%9A%8F%E4%BE%BF%E5%A1%AB%E5%85%85%E4%B8%80%E4%B8%8B').appendTo(bodyUl);
+                    }
+                    //把headClone，bodyClone都插入到dom中
+                    container.append(headClone).append(bodyClone);
+                }
+
+            })
+        })
+
+    </script>
+
+</body>
+
+</html>

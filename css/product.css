@@ -1,0 +1,232 @@
+.header-nav .nav-category .category-list > ul{
+    background: #fff;
+    border: 1px solid #ff6700;
+}
+.category-list .title{
+    color: #424242;
+}
+.category-list .title i{
+    color: #e0e0e0;
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 16px;
+    line-height: 16px;
+}
+.category-list {
+    display: none;
+}
+.nav-category:hover  .category-list{
+    display: block;
+}
+
+.product{
+    border-top: 1px solid #e0e0e0;
+    padding-top: 40px;
+    padding-bottom: 50px;
+}
+.product .pro-view{
+    float: left;
+    height: 600px;
+    width: 606px;
+    margin-left: 0;
+    position: relative;
+    overflow: hidden;
+}
+.view-list{
+    position: absolute;
+    left: 0;
+    font-size: 0;
+ 
+}
+.product .pro-view .view-list img{
+    
+    display: inline-block;
+    height: 560px;
+    width: 560px;
+    z-index: 50;
+    /* display: block; */
+}
+.product .pro-info{
+    float: left;
+    margin-left: 12px;
+    width: 606px;
+    /* border: 1px solid black; */
+}
+.view-control {
+    position: relative;
+    height: 560px;
+    width: 560px;
+}
+.view-control .control-lr{
+    position: relative;
+    height: 560px;
+    width: 560px;
+}
+.view-control .control-lr a{
+    position: absolute;
+    top: 50%;
+    z-index: 99;
+    width: 41px;
+    height: 69px;
+    margin-top: -35px;
+    text-indent: -9999px;
+    overflow: hidden;
+    outline: 0;
+}
+.control-prev {
+    left: 0;
+    background: url(../img/icon-slides.png) no-repeat -84px 50%;
+}
+.control-next{
+    right: 0;
+    background: url(../img/icon-slides.png) no-repeat -125px 50%;
+}
+.view-control .control-lr > a:hover {
+    background-color: rgba(0,0,0,0.4);
+}
+.control-page {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    z-index: 100;
+}
+.control-page > a{
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 5px;
+    border: 2px solid #fff;
+    border-color: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    text-align: left;
+    text-indent: -9999px;
+    background: rgba(0,0,0,0.4);
+}
+.control-page > a:hover ,.control-page > a.active{
+    background: rgba(255,255,255,0.4);
+    border-color: #757575;
+    border-color: rgba(0,0,0,0.4)
+}
+
+.control-page{
+    position: absolute;
+    bottom: 0;   
+    left: 0;
+    width: 560px;
+    font-size: 12px;
+    text-align: center;
+    color: #666;
+}
+.product .control-page > a{
+    background: #ccc;
+    width: 50px;
+    /* border-radius: 0; */
+    border: 0;
+    height: 2px;
+        /* text-align: center; */
+
+    text-align: left;
+    /* text-indent: -9999px; */
+}
+/* 通过修改背景颜色来实现 */
+.control-page > a:hover{
+    background: #757575;
+}
+.control-page > a.active{
+    background: #757575;
+}
+.pro-info h1.pro-title{
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: normal;
+    color: #212121;
+}
+.pro-info .pro-desc{
+    color: #b0b0b0;
+    margin: 0;
+    padding: 0;
+    padding-top: 8px;
+}
+.pro-info .pro-price{
+    display: block;
+    font-size: 18px;
+    line-height: 1;
+    color: #ff6700;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px 0 20px;
+}
+
+.pro-choose .choose-title {
+    line-height: 1;
+    font-size: 18px;
+    color: #333;
+}
+.pro-choose ul.choose-list{
+    margin-left: -6px;
+}
+.pro-choose .choose-list li{
+    float: left;   
+    border: 1px solid #e0e0e0;
+    width: 298px;
+    height: 42px;
+/*     */
+    margin-left: 6px; 
+    margin-top: 15px;
+    line-height: 42px;
+    
+    font-size: 16px;
+    overflow: hidden;
+
+}
+.pro-choose .choose-list li.active{
+    border-color: #ff6700; 
+}
+.pro-choose .choose-list .list-name{
+    width: 170px;
+
+    /* display: inline-block; */
+}
+.pro-choose .choose-list li a{
+    text-align: left;
+    padding: 0 27px;
+    display: block;
+    color: #333;
+}
+.pro-choose .choose-list .list-name{
+    display: inline-block;
+    width: 170px;
+    text-align: left;
+}
+.pro-choose .choose-list .list-price{
+    float: right;
+    color: #b0b0b0;
+}
+.pro-choose .choose1{
+    padding-bottom: 10px;
+}
+.pro-choose .choose2 .list-name{
+    width: 244px;
+    text-align: center;
+}
+.pro-btn > a{
+    display: inline-block;
+    background: #ff6700;
+    color: #fff;
+    width: 298px;
+    height: 52px;
+    line-height: 52px;
+    font-size: 16px;
+    border: 1px solid #ff6700;
+    text-align: center;
+}
+
+.pro-btn {
+    margin-top: 40px;
+}
+.pro-btn > a:hover{
+    background: #f25807;
+    border: 1px solid #f25807;
+}

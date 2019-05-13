@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="miniheader">
+        <div class="container">
+            <div class="miniheader-logo"><a href="#">小米官网</a></div>
+            <div class="miniheader-title ">
+                <h2>我的购物车</h2>
+                <p>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</p>
+
+            </div>
+            <div class="miniheader-info">
+                <i class="iconfont">&#x221a;</i>
+                <a href="#" class="user-name"><span></span></a>
+                <span class="sep">|</span>
+                <a href="#" class="info-order">我的订单</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cartmain">
+        <div class="container">
+            <div class="cartmain-list">
+                <div class="list-head clearfix">
+                    <div class="col col-check"><i class="iconfont icon-checkbox">&#x221a;</i> 全选</div>
+                    <div class="col col-img">&nbsp;</div>
+                    <div class="col col-name">商品名称</div>
+                    <div class="col col-price">单价</div>
+                    <div class="col col-num">数量</div>
+                    <div class="col col-total">小计</div>
+                    <div class="col col-action">操作</div>
+                </div>
+                <div class="list-body">
+                    <div class="item-box clearfix">
+                        <div class="col col-check"><i class="iconfont icon-checkbox">&#x221a;</i></div>
+                        <div class="col col-img"><a href="#"><img src="" alt=""></a></div>
+                        <div class="col col-name"></div>
+                        <div class="col col-price"><span class="price"></span>元</div>
+                        <div class="col col-num">
+                            <div class="change-num clearfix">
+                                <a data-change="-1" href="javascript:void(0)"><i class="iconfont">&#xe60b;</i></a>
+                                <input type="text">
+                                <a data-change="1" href="javascript:void(0)"><i class="iconfont">&#xe609;</i></a>
+                            </div>
+                        </div>
+                        <div class="col col-total"><span class="price"></span>元</div>
+                        <div class="col col-action"><a href="javascript:void(0)"><i class="iconfont">&#xe602;</i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="cartmain-bar clearfix">
+                <div class="bar-info">
+                    <a href="#">继续购物</a>
+                    <span class="info-total">共 <i class="total-num">0</i> 件商品，已选择 <i class="total-num">0</i> 件</span>
+                </div>
+                <span class="total-price">合计：<em class="totalprice-num">0</em>元</span>
+                <form action="checkout.html" style="display: inline;" method="GET">
+                    <!--放在form里面可以发送ids数据-->
+                    <input type="hidden" id="ids" name="ids">
+                    <a href="javascript:;" id="checkout" class="bar-btn btn-primary">去结算</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        //已登录
+        $.getUserInfo().then(function (user) {
+            $('.user-name span').text(user.name)
+        }, function () {
+            location.href = 'serviceLogin.html';
+        })
+        //计算总数和总价
+        const calc = function () {
+
+
+            let totalNum = 0, num = 0, sum = 0, selectedIds = [];//selectedIds存放选中的id
+            //总件数
+            $('.list-body .col-num input').each(function (index, ele) {
+                totalNum += +$(this).val();//+号的用处
+            })
+            $('.list-body .item-box.selected').each(function (index, ele) {
+                selectedIds.push($(this).data('id'));//选中的ids
+                num += +$(this).find('input').val();//s选中数量
+                sum += +$(this).find('.col-total .price').text();//选中总价
+            })
+            //更新视图
+            $('.total-num').first().text(totalNum);
+            $('.total-num').last().text(num);
+            $('.totalprice-num').text(sum);
+            $('#ids').val(selectedIds.join(','));//数组连接起来赋值给input-> ids=1,2,3
+            console.log($('#ids').val());
+            
+            //num==0时，按钮不可点击
+            $('#checkout').toggleClass('btn-disabled', num == 0);
+
+        }
+        //获取购物车数据
+        $.apiGet('/user/cart').done(function (result) {
+            console.log(result);
+            const container = $('.list-body');
+            const tpl = container.find('.item-box').remove();
+            let clone;
+            for (const item of result) {
+                clone = tpl.clone();
+                clone.data('id', item.id);//设置id
+                clone.find('.col-img a').attr('href', $.productLink(item.pid))//设置图片的超链接
+                    .find('img').attr('src', item.imgs[0]);
+                clone.find('.col-name').text(item.name);
+                clone.find('.col-price .price').text(item.price);
+                clone.find('.col-num input').val(item.quantity);
+                clone.find('.col-total .price').text(parseFloat(item.price) * item.quantity);
+                //插入dom
+                container.append(clone);
+            }
+
+            calc();
+        })
+
+        //勾选
+        $('.list-body').on('click', '.icon-checkbox', function () {
+            $(this).toggleClass('select');//当前iconfont勾选上样式
+            $(this).parents('.item-box').toggleClass('selected');//item+selected
+            calc();//计算总价总数
+        })
+        //全选
+        $('.list-head .icon-checkbox').on('click',function(){
+            if($(this).hasClass('select')){
+                $(this).removeClass('select');
+                $('.list-body .item-box').removeClass('selected').find('.icon-checkbox').removeClass('select');
+            }else{
+                $(this).addClass('select');
+                $('.list-body .item-box').addClass('selected').find('.icon-checkbox').addClass('select');
+            }
+            calc();//计算总价总数
+        })
+        //修改数量
+        const changeNum = function (jqDom, num) {
+            const parentDom = jqDom.parents('.item-box');
+            //发送post请求更新购物车数据
+            $.apiPost('/user/updateCart', { id: parentDom.data('id'), quantity: num })
+                .done(function () {
+                    if (num > 0) {
+                        //重新计算
+                        const unitPrice = +parentDom.find('.col-price .price').text();
+                        parentDom.find('.change-num input').val(num);//单个件数
+                        parentDom.find('.col-total .price').text(unitPrice * num);//单个总价
+                    } else {
+                        parentDom.remove();//移除dom
+                    }
+                    calc();//重新计算购物车总金额
+                })
+        };
+        //修改数量-事件-手动输入
+        $('.list-body').on('change', '.change-num input', function () {
+            const num = +$(this).val();
+            changeNum($(this), num);//调用changeNum函数:发送post请求+更新视图
+        })
+        //修改数量-事件-点击+，-按钮
+        $('.list-body').on('click', '.change-num a', function () {
+            const num = +$(this).siblings('input').val() + +$(this).data('change');//'data-change'
+            changeNum($(this), num);//调用changeNum函数:发送post请求+更新视图
+        })
+        //删除
+        $('.list-body').on('click', '.col-action a', function () {
+            changeNum($(this), 0);
+        })
+        //结算-提交
+        $('#checkout').on('click', function () {
+            if ($(this).hasClass('btn-disabled')) return;
+            $(this).parents('form').submit();//触发submit事件
+        })
+
+
+    </script>
+</body>
+
+</html>

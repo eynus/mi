@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>选择在线支付方式</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/confirm.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+</head>
+
+<body>
+    <div class="miniheader">
+        <div class="container">
+            <div class="miniheader-logo"><a href="#">小米官网</a></div>
+            <div class="miniheader-title ">
+                <h2>支付订单</h2>
+                <p>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</p>
+
+            </div>
+            <div class="miniheader-info">
+                <a href="#" class="user-name"><span></span></a>
+                <span class="sep">|</span>
+                <a href="#" class="info-order">我的订单</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm">
+        <div class="container">
+            <form action="post">
+                <div class="confirm-order confirm-section clearfix">
+                    <i class="iconfont">&#x221a;</i>
+                    <div class="box-order clearfix">
+                        <div class="order-info">
+                            <h2 class="info-title">订单提交成功！去付款咯～</h2>
+                            <p class="info-time">请在<span>0小时30分</span>内完成支付, 超时后将取消订单</p>
+                            <p class="info-address">
+                                <spanc class="address"></span>
+                            </p>
+                        </div>
+                        <div class="order-total">
+                            <p>应付总额：<span><em class="money"></em>元</span></p>
+                            <a href="javascript:void(0);">订单详细</a>
+                        </div>
+                    </div>
+
+                    <div class="order-detail">
+                        <ul>
+                            <li class="clearfix">
+                                <div class="label">订单号：</div>
+                                <div class="content order-no"></div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="label">收货信息：</div>
+                                <div class="content address"></div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="label">商品名称：</div>
+                                <div class="content items"><br></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="confirm-payment confirm-section">
+                    <div class="payment-title">选择以下支付方式付款</div>
+                    <div class="payment-list">
+                        <ul class="clearfix">
+                            <li id="pay"><img src="img/weixinpay.png" alt=""></li>
+                            <!-- <li><img src="img/payOnline_zfb.png" alt=""></li>
+                            <li><img src="img/unionpay.png" alt=""></li> -->
+                        </ul>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="confirm-qrcode" style="display: none">
+            <div id="qrcode"></div>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <script>
+        $(function () {
+            //有订单号
+            const orderNum = new URLSearchParams(location.search).get('order_no');
+            if (!orderNum) {
+                alert('订单号无效');
+                window.history.back();
+                return;
+            }
+            //已登录
+            $.getUserInfo().then(function (user) {
+                $('.user-name span').text(user.name)
+            }, function () {
+                location.href = 'serviceLogin.html';
+            })
+            $.apiGet('/user/getOrder?order_no=' + orderNum).done(function (result) {
+                console.log(result);
+
+                //更新视图
+                $('.order-no').text(orderNum);
+                $('.money').text(result.sum);
+
+                const addr = result.address;
+                $('.address').text(`${addr.recipient} ${addr.phone} ${addr.area} ${addr.address}`);
+                $('.items').append(result.items.map(ele => $('<p>').text(ele.name + ' x ' + ele.quantity)))
+
+                //支付
+                $('#pay').on('click', function () {
+                    $.apiPost('/user/pay', { order_no: orderNum }).done(function (result) {
+                        console.log(result);
+                        new QRCode("qrcode", {//"qrcode"是容器的id名称
+                            text:result,
+                            width:300,
+                            height:300,
+                        });
+                        $(".confirm-qrcode").show().on('click',function(){
+                            $('#qrcode').empty();//每次及时清空
+                            $(this).hide();//点击消失
+                        })
+                    })
+                })
+            })
+
+
+        })
+    </script>
+</body>
+
+</html>

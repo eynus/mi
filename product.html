@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>商品详细页</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/product.css">
+</head>
+
+<body>
+
+
+    <div class="product">
+        <div class="container">
+            <div class="pro-view">
+                <div class="view-list">
+                </div>
+                <div class="view-control">
+                    <div class="control-lr">
+                        <a href="#" class="control-prev">上一张</a>
+                        <a href="#" class="control-next">下一张</a>
+                    </div>
+                    <div class="control-page">
+                    </div>
+                </div>
+            </div>
+            <div class="pro-info">
+                <h1 class="pro-title"></h1>
+                <p class="pro-desc"></p>
+                <div class="pro-price">
+                    <span><label class="price"></label>元</span>
+                </div>
+                <div class="pro-choose">
+                    <div class="choose1">
+                        <p class="choose-title">选择<span class="prop-name"></span></p>
+                        <ul class="choose-list clearfix">
+                            <li>
+                                <a href="javascript:;">
+                                    <span class="list-name"></span>
+                                    <span class="list-price"><label class="price"></label>元</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="choose2">
+                        <p class="choose-title">选择<span class="prop-name"></span></p>
+                        <ul class="choose-list clearfix">
+                            <li>
+                                <a href="javascript:;">
+                                    <span class="list-name"></span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="pro-btn"><a href="javascript:;" id="addCart">加入购物车</a></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/carousel.js"></script>
+    <script>
+        //pid不存在时，直接报错并返回
+        const pid = $.parseProductId();
+        if (!pid) {
+            window.alert('商品不存在');
+            window.history.back();
+            // return;
+        }
+        //设置左侧-轮播图  
+        const setCarousel = function (images) {
+            let dom0;
+            const imgs = images.map(function (img, index) {
+                const dom = $('<img>').attr('src', img);
+                if (index == 0) {
+                    dom0 = dom.clone();
+                }
+                return dom;
+            });
+       
+            const links = images.map(() => $('<a href="javascript:;" >1</a>'));//pages
+            $('.pro-view .view-list').empty().append(imgs).append(dom0);
+            $('.pro-view .control-page').empty().append(links);
+        }
+        let selectedSku = false;
+        $.apiGet('/productDetail?pid=' + pid).done(function (result) {
+            console.log(result);
+            document.title = result.name;//文档title
+            //名称和描述 设置
+            $('.pro-title').text(result.name);
+            $('.pro-desc').text(result.desc);
+            //版本+颜色 设置
+            $('.choose1 .prop-name').text(result.prop1_name);
+            $('.choose2 .prop-name').text(result.prop2_name);
+            //模板
+            const tpl1 = $('.choose1 li').remove();
+            const tpl2 = $('.choose2 li').remove();
+            const ul1 = $('.choose1 ul');
+            const ul2 = $('.choose2 ul');
+            let option2, option1, curIndex = 0, len;
+            for (const idx1 in result.options) {
+                const option1 = tpl1.clone();
+                const lv1 = result.options[idx1];
+
+                option1.find('.list-name').text(lv1.prop1_value)
+                option1.find('.list-price .price').text(lv1.price)
+
+                for (const lv2 of lv1.list) {
+                    option2 = tpl2.clone();
+                    option2.addClass('idx' + idx1);//用于联动
+                    option2.find('.list-name').text(lv2.prop2_value)//颜色名称
+                    //绑定点击事件
+                    option2.find('a').on('click', function () {
+                        //设置选中的sku_id
+                        selectedSku = lv2.sku_id;
+                        //设置价格
+                        $('.pro-price .price').text(lv2.price)
+                        //左侧图片
+                        setCarousel(lv2.imgs);
+                        len = lv2.imgs.length;
+                        //绑定事件-切换图片
+                        new Carousel($('.control-lr a'), 'control-next', $('.control-page'), curIndex, 560, len, $('.view-list'), 700, 5000)
+
+                    })
+
+                    //插入dom
+                    ul2.append(option2);
+                }
+                //lv1绑定点击事件-对应lv2一起变化
+                option1.find('a').on('click', function () {
+                    ul2.find('li').hide().filter('.idx' + idx1).show()//筛选出对应className=idx1的lv2元素
+                        .first().find('a').click();//默认选中第一个。
+                })
+                //插入dom
+                ul1.append(option1);
+            }
+
+            //点击-active类
+            $('.pro-choose').on('click', 'a', function () {
+                $(this).parent().addClass('active').siblings().removeClass('active');
+            })
+            //默认选中第一个
+            $('.choose1 li a').first().click();
+
+
+            //加入购物车
+            $('#addCart').on('click', function () {
+                if (selectedSku) {
+                    $.apiPost('/user/addCart', { sku_id: selectedSku }).done(function () {
+                        alert('添加成功');
+                        location.reload();
+                    })
+                } else {
+                    alert('请先选择型号')
+                }
+            })
+
+        })
+     
+    </script>
+</body>
+
+</html>

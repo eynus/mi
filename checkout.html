@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>填写订单信息</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="miniheader">
+        <div class="container">
+            <div class="miniheader-logo"><a href="#">小米官网</a></div>
+            <div class="miniheader-title ">
+                <h2>确认订单</h2>
+                <p>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</p>
+
+            </div>
+            <div class="miniheader-info">
+                <i class="iconfont">&#x221a;</i>
+                <a href="javascript:;" class="user-name"><span></span></a>
+                <span class="sep">|</span>
+                <a href="javascript:;" class="info-order">我的订单</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout">
+        <div class="container">
+            <div class="checkout-box">
+                <div class="checkout-address clearfix">
+                    <p class="address-header">收货地址</p>
+                    <div class="address-body">
+                        <!-- 有select时候才会修改字样 -->
+                        <div class="address-item ">
+                            <dl>
+                                <dt class="recipient"></dt>
+                                <dd class="phone"></dd>
+                                <dd class="area"></dd>
+                                <dd class="address"></dd>
+                            </dl>
+                            <div class="actions"><a href="javascript:;">修改</a></div>
+                        </div>
+
+
+                        <div class="address-item address-new">
+                            <i class="iconfont">&#xe609;</i>
+                            添加新地址
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-goods">
+                    <p class="goods-header">商品</p>
+                    <div class="goods-body">
+                        <ul class="goods-list clearfix">
+                            <li class="clearfix">
+                                <div class="goods-img"><img src="" alt=""></div>
+                                <div class="goods-name"><a href="#"></a></div>
+                                <div class="goods-price"></div>
+                                <div class="goods-total"></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="checkout-count clearfix">
+                    <div class="count-box">
+                        <ul>
+                            <li>
+                                <label>商品件数：</label>
+                                <span><span class="total-quantity"></span>件</span>
+                            </li>
+                            <li>
+                                <label>商品总价：</label>
+                                <span class="total-price"><span class="price"></span>元</span>
+                            </li>
+                            <li>
+                                <label>活动优惠：</label>
+                                <span>-0元</span>
+                            </li>
+                            <li>
+                                <label>优惠券抵扣：</label>
+                                <span>-0元</span>
+                            </li>
+                            <li>
+                                <label>运费：</label>
+                                <span>0元</span>
+                            </li>
+                            <li class="total-price">
+                                <label>应付总额：</label>
+                                <span><em class="price">4898</em>元</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="checkout-bar clearfix">
+                    <div class="bar-btn"><a href="javascript:;" id="checkout">去结算</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="edit-bg" style="display:none;"></div>
+    <div class="edit-address" style="display:none;">
+        <div class="edit-header">
+            <span class="title">添加收获地址</span>
+            <a href="javascript:void(0);" class="close"><i class="iconfont">&#xe602;</i></a>
+        </div>
+        <div class="edit-body">
+            <form class="body-form clearfix">
+                <input type="hidden" name="address_id">
+                <!--隐藏的address_id,当编辑地址并向后台发送数据时，需要用到-->
+                <div class="form-section form-name">
+                    <!-- <label for="user_name">姓名</label> -->
+                    <input type="text" name="recipient" class="input-text name-input" value=" " placeholder="收货人姓名">
+                </div>
+                <div class="form-section form-phone">
+                    <!-- <label for="user_phone">手机号</label> -->
+                    <input type="text" name="phone" class="input-text phone-input" value=" " placeholder="手机号">
+                </div>
+                <div class="form-section form-area">
+                    <input type="text" name="area" class="input-text area-input" value=""
+                        placeholder="选择省 / 市 / 区 / 街道">
+                </div>
+                <div class="form-section form-detail">
+                    <!-- <label for="user_detail">详细地址</label> -->
+                    <textarea type="textarea" name="address" class="input-text detail-input"
+                        placeholder="详细地址，路名或街道名称，门牌号"> </textarea>
+                </div>
+
+
+            </form>
+
+            <div class="form-select" style="display:none">
+                <span class="select-close">x</span>
+                <div class="select-box clearfix">
+                    <div class="select-item" data-init-txt="选择省份/自治区">选择省份/自治区</div>
+                    <div class="select-item hidden" data-init-txt="选择城市/地区">选择城市/地区</div>
+                    <div class="select-item hidden" data-init-txt="选择区县">选择区县</div>
+                    <!-- <div class="select-item hidden" data-init-txt="选择配送区域">选择配送区域</div> -->
+                </div>
+                <div class="option-box">
+                    <ul class="option-list clearfix province">
+                        <li class="addr-tpl" data-value="" data-txt=""></li>
+                    </ul>
+                    <ul class="option-list clearfix hidden city">
+
+                    </ul>
+                    <ul class="option-list clearfix hidden district">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="edit-footer">
+            <a href="javascript:void(0);" class="btn btn-primary confirm">保存</a>
+            <a href="javascript:void(0);" class="btn btn-gray close ">取消</a>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/area.js"></script>
+    <script>
+        //下拉选择全国地址
+        // const selectTpl = $('.form-select').remove();
+        const tpl = $('.addr-tpl').first().remove();
+        const selectAddr = [];
+        $('.area-input').on('focus', function () {
+
+            const select = $('.form-select');
+            const provinceUl = $('.province');//省
+            const cityUl = $('.city');//市
+            const districtUl = $('.district');//区
+            const townUl = $('.town');//镇
+            const selectItem = select.find('.select-item');//文字提示
+
+
+            let idx2 = 0, idx3 = 0, idx1 = 0;
+
+
+            select.show();//显示选择框
+
+            function showProvince() {
+                provinceUl.empty();
+                //显示第一个select-item
+                let index = 0;
+                for (const addr of provinceList) {
+                    const clone = tpl.clone();
+                    clone.text(addr.name).attr('data-txt', addr.name).attr('data-value', index).addClass('level1');
+
+                    index++;
+                    provinceUl.append(clone);
+                }
+            }
+            function showCity(idx1) {
+                // console.log('idx1:',idx1);
+                // console.log('provinceList[idx1]',provinceList[idx1]);
+
+                cityUl.empty();
+                let index = 0;
+                for (const city of provinceList[idx1].cityList) {
+                    const clone = tpl.clone();
+                    clone.text(city.name).attr('data-txt', city.name).attr('data-value', index).addClass('level2');
+                    index++;
+                    cityUl.append(clone);
+                }
+            }
+            function showDistrict(idx1, idx2) {
+                districtUl.empty();
+                let index = 0;
+
+                for (const district of provinceList[idx1]['cityList'][idx2]['districtList']) {
+                    const clone = tpl.clone();
+                    clone.text(district).attr('data-txt', district).attr('data-value', index).addClass('level3');
+                    index++;
+                    districtUl.append(clone);
+                }
+            }
+            function clearAddress() {
+                select.find('.select-item').each(function (index, ele) {
+                    // console.log($(ele).data('init-txt'));
+
+                    $(ele).text($(ele).data('init-txt')).removeClass('hidden');//初始化text
+                    if (index > 0 && !$(ele).hasClass('hidden')) {
+                        $(ele).addClass('hidden');
+                    }
+                });
+                //内容区域清空
+                select.find('.option-list').empty().first().removeClass('hidden').nextAll().addClass('hidden');
+
+            }
+            function init() {
+                clearAddress();
+                showProvince();
+
+            }
+            init();//初始化
+            //点击省
+            select.on('click', '.level1', function () {
+                idx1 = $(this).data('value');
+                selectAddr[0] = $(this).data('txt');
+                //填上所选省
+                selectItem.first().text($(this).data('txt')).attr('data-selected', idx1);//记录下所选的id
+                //继续选择市
+                provinceUl.addClass('hidden');
+                selectItem.eq(1).removeClass('hidden');
+                cityUl.removeClass('hidden');
+
+                console.log('click lv1');
+
+                showCity(idx1);
+
+            })
+            //点击市
+            select.on('click', '.level2', function () {
+                idx2 = $(this).data('value');
+                //填上所选市
+                selectItem.eq(1).text($(this).data('txt')).attr('data-selected', idx2);//记录下所选的id
+                selectAddr[1] = $(this).data('txt');
+                //继续选择区
+                cityUl.addClass('hidden');
+                selectItem.eq(2).removeClass('hidden');
+                districtUl.removeClass('hidden');
+
+                showDistrict(idx1, idx2);
+
+            })
+            //点击区
+            select.on('click', '.level3', function () {
+                //填上所选区
+                selectItem.eq(2).text($(this).data('txt'));
+                selectAddr[2] = $(this).data('txt');
+                select.hide();
+                $('.area-input').val(selectAddr);
+            })
+
+
+            //点击重新选择
+            selectItem.on('click', function (e) {
+                const selectedId = $(this).prev().data('selected');
+
+                $(this).text($(this).data('init-txt'));//"选择 xx/xx"
+                $(this).nextAll().addClass('hidden').each(function (index, ele) {
+                    $(ele).text($(ele).data('init-txt'));
+                });
+                //内容区域变化
+                const index = $(this).index();
+                $('.option-list').eq(index).removeClass('hidden').nextAll().addClass('hidden');
+
+            })
+
+
+
+            //关闭
+            $('.select-close').on('click', function () {
+                select.hide();
+            })
+
+
+        })
+    </script>
+    <script>
+
+        $(function () {
+
+            //发送请求-地址数据
+            const ids = new URLSearchParams(location.search).get('ids');//一个可以处理url参数的api
+            if (!ids) {
+                window.alert('未选择商品')
+                window.history.back();
+                return;//不继续向下执行
+            }
+            //已登录
+            $.getUserInfo().then(function (user) {
+                $('.user-name span').text(user.name)
+            }, function () {
+                location.href = 'serviceLogin.html';
+            })
+            let addressList = [];
+            let selectedAddress = 0;
+            //请求地址数据
+            $.apiGet('/user/addressList').done(function (result) {
+                // console.log('addrfessList', result);
+
+                const addressList = $('.address-body');
+                const tpl = addressList.find('.address-item').first().remove();//地址模板
+                //循环遍历，添加/更新dom
+                const updateAddress = data => {
+                    // console.log('data:', data);
+
+                    //选择
+                    const exists = $('.address-item[data-id=' + data.address_id + ']');
+                    const dom = exists.length > 0 ? exists : tpl.clone();//不存在就克隆一个
+                    dom.attr('data-id', data.address_id);// 因为要用选择器筛选，不能用 data 方法???????????????????
+                    dom.find('a').data('json', data);//编辑时弹窗中回填使用
+                    dom.find('.recipient').text(data.recipient);
+                    dom.find('.phone').text(data.phone);
+                    dom.find('.area').text(data.area);
+                    dom.find('.address').text(data.address);
+                    if (exists.length == 0) {
+                        addressList.prepend(dom);
+                    }
+                    return dom;
+
+                };
+
+                const addressEditModal = $('.edit-bg, .edit-address');//包含mask??
+                // addressEditModal.hide();
+                const editAddress = data => {
+                    let title = "添加收货地址";
+                    if (data) {
+                        for (const key in data) {
+                            addressEditModal.find('input[name=' + key + '],textarea[name=' + key + ']').val(data[key]);//包括隐藏的address_id
+
+                        }
+                        title = "编辑收货地址";
+                    } else {
+                        addressEditModal.find('input,textarea').val('');//提前清空
+                    }
+                    addressEditModal.find('.title').text(title);//更新标题
+                    addressEditModal.show();//显示
+                }
+
+                //绑定事件-点击添加/编辑
+                addressList.on('click', '.address-item', function () {
+                    if ($(this).hasClass('address-new')) {
+
+                        //添加新地址
+                        editAddress();
+                    } else {
+                        //选择地址
+                        $(this).siblings().removeClass('select');
+                        $(this).addClass('select');//选中样式
+                        selectedAddress = $(this).attr('data-id');//选中的地址id
+                    }
+                });
+                //编辑按钮
+                addressList.on('click', '.address-item a', function () {
+
+                    editAddress($(this).data('json'));//将保存的json数据再次输入到弹窗中，可以编辑
+
+                    //    下拉出现地址可以选择
+                });
+                //初始化渲染并默认选中
+                if (result) {
+                    // console.log('rendering');
+
+                    result.forEach(updateAddress);
+                    addressList.children().first().click();
+                }
+
+
+                //确认添加
+                addressEditModal.find('a.confirm').on('click', function () {
+
+                    //添加到dom中
+                    const addressParams = $('.edit-address form').serialize();//整理参数
+                    // console.log('addressParams:', addressParams);
+
+                    $.apiPost('/user/updateAddress', addressParams).done(function (result) {
+                        updateAddress(result).click();//添加并默认选中这新增的
+
+
+                        addressEditModal.hide();//隐藏
+                    })
+
+                })
+                //关闭弹窗
+                addressEditModal.find('a.close ').on('click', function () {
+                    $('.form-select').hide();
+
+                    addressEditModal.hide();
+                })
+
+            });
+
+
+            //购物车请求数据
+            $.apiGet('/user/cart?ids=' + ids).done(function (result) {
+                if (result.length == 0) {
+                    alert('请提交要结算的商品');
+                    window.history.back();
+                    return;
+                }
+                const container = $('.goods-list');
+                const tpl = $('.goods-list li').remove();
+                let clone, quantity = 0, sum = 0;
+                for (const item of result) {
+                    clone = tpl.clone();
+                    clone.find('.goods-img img').attr('src', item.img);//图片
+                    clone.find('.goods-name a').attr('href', $.productLink(item.pid)).text(item.name);//名称
+                    clone.find('.goods-price').text(item.price + '元 x ' + item.quantity);//价格
+                    clone.find('.goods-total').text(item.price * item.quantity + '元');//总价
+
+                    container.append(clone);
+                    quantity += +item.quantity;
+                    sum += item.price * item.quantity;
+                }
+                //视图-总价-总件数
+                $('.total-quantity').text(quantity);
+                $('.total-price .price').text(sum);
+                //点击-结算
+                $('#checkout').on('click', function () {
+                    if (selectedAddress) {
+                        $.apiPost('/user/checkout', { address_id: selectedAddress, ids: ids }).done(function (orderNo) {
+                            window.location.href = 'confirm.html?order_no=' + orderNo;
+                        })
+                    } else {
+                        alert('请先选择地址');
+                    }
+                })
+            }).fail(function () {
+                window.history.back();
+            });
+        });
+        /**
+         * 掉过的坑：
+         * 出现了重复打印
+         * const tpl = $('.addr-tpl').first().remove(); 没有remove掉，也没有选择第一个。且放在了foucs事件中。
+        */
+    </script>
+</body>
+
+</html>

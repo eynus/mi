@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>登录 / 注册</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        body,
+        a {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container {
+            width: 1130px;
+            margin: 0 auto;
+        }
+
+        .container::before,
+        .container::after,
+        .clearfix::before,
+        .clearfix::after {
+            content: "";
+            display: table;
+        }
+
+        .container::after,
+        .clearfix::after {
+            clear: both;
+        }
+
+        .logo a {
+            display: block;
+            background: url(img/mistore_logo.png) no-repeat;
+            width: 200px;
+            height: 98px;
+        }
+
+        .panel {
+            background: url(img/loginbg.jpg) no-repeat top center;
+            height: 588px;
+        }
+
+        .panel-layout {
+            width: 410px;
+            min-height: 524px;
+            background: white;
+            margin-top: 32px;
+            float: right;
+        }
+
+
+        .panel-tabs {
+            padding: 27px 0 24px;
+            text-align: center;
+            font-size: 24px;
+            color: #e0e0e0;
+        }
+
+        .panel-tabs .select {
+            color: #f56600;
+        }
+
+        .panel-tabs .line {
+            width: 1px;
+            height: 24px;
+            margin: 0 35px 0 42px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .tabs-link {
+            padding: 27px 0 24px;
+            text-align: center;
+            font-size: 24px;
+            color: #666;
+        }
+
+        .panel-account {
+            width: 348px;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .account-item {
+            width: 306px;
+            height: 22px;
+            line-height: 22px;
+            padding: 13px 16px 13px 14px;
+            display: block;
+            outline: 0;
+            border: 0 none;
+            color: #333;
+        }
+
+        .account-label {
+            margin-bottom: 14px;
+            border: 1px solid #e0e0e0;
+            outline: 0 none;
+            display: -webkit-box;
+        }
+
+        .panel-account .btn {
+            background-color: #ef5b00;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            display: block;
+            margin-bottom: 14px;
+            text-align: center;
+            font-size: 14px;
+            color: #fff;
+            cursor: pointer;
+            border: 0;
+            outline: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <div class="container"><a href="#"></a></div>
+    </div>
+
+    <div class="panel">
+        <div class="container">
+            <div class="panel-layout">
+                <div class="panel-tabs">
+                    <a href="javascript:void(0);" class="tabs-link select" data-tab="login">账号登录</a>
+                    <span class="line"></span>
+                    <a href="javascript:void(0);" class="tabs-link" data-tab="register">账号注册</a>
+                </div>
+                <div class="panel-account">
+                    <form action="javascript:;" method="POST" id="form">
+                        <!--action:javascript:;阻止默认操作-刷新-->
+                        <label class="account-label" for="username">
+                            <input class="account-item" autocomplete="off" type="text" name="name" id="username"
+                                placeholder="账号">
+                        </label>
+                        <label class="account-label" for="pwd">
+                            <input class="account-item" type="password" placeholder="密码" autocomplete="off" id="pwd"
+                                name="password">
+                        </label>
+                        <label class="account-label password2" for="pwd2" id="regsterLabel" style="display: none">
+                            <input class="account-item" type="password" placeholder="重复密码" autocomplete="off" id="pwd2"
+                                name="password2">
+                        </label>
+                        <input class="btn" id="btn" type="submit" value="登录">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        //判断登录状态
+        $.getUserInfo().done(function () {
+            location.href = 'index.html';
+        })
+        //点击按钮切换登录/注册
+        var tab = 'login';
+        $('.panel-tabs').on('click', 'a', function () {
+
+            tab = $(this).data('tab');
+            // console.log(tab);
+            $('.tabs-link').removeClass('select');
+            $(this).addClass('select');//点击的按钮设置为选中的样式
+            //按钮名称
+            $('.btn').val(tab == 'login' ? '登录' : '注册');
+            //pwd2显示
+            $('.password2').toggle(tab == 'register');//true时显示
+        })
+        //根据url判断展示登录/注册
+        const match = location.search.match(/^\?tab=(register|login)$/);
+        console.log(',=match,',match);
+        
+        if (match) {
+            console.log($('.panel-tabs a[data-tab=' + match[1] + ']'));
+            
+            $('.panel-tabs a[data-tab=' + match[1] + ']').click();//标签中设置属性data-tab = login.register
+        }
+
+        //点击提交-表单
+
+        $('#form ').on('submit', function () {
+            //try-catch捕获
+            try {
+                //检查是否必填
+                $(this).find('label:visible input').each(function () {
+                    if (!$(this).val()) {
+                        throw $(this).attr('placeholder') + '未填写'
+                    }
+                });
+                //注册-检查两次密码是否相等
+                if (tab == 'register') {
+                    const pwd1 = $(this).find('input[name=password]').val();
+                    const pwd2 = $(this).find('input[name=password2]').val();
+                    if (pwd1 !== pwd2) {
+                        throw '两次密码不一致'
+                    }
+                }
+            }
+            catch (e) {
+                alert(e);
+                return;//不继续执行。
+            }
+            //发送post请求
+            const path = '/' + tab;
+            const params = $(this).serialize();//jquery的方法。拼接所有input的值：name=value&&name=value
+            console.log(path, params);
+
+            $.apiPost(path, params).done(function (user) {
+                //设置token到本地浏览器
+                $.setToken(user.token);
+                //跳转到首页
+                location.href = 'index.html';
+            });
+
+        })
+
+
+        /***
+         * 吃过的亏：
+         * 报错：400 用户名无效
+         * 原因：input中name=user,而接口中应该是name,不一致而报错。
+         * 
+         * tab(<a>)中添加属性data-tab
+        */
+    </script>
+</body>
+
+</html>
