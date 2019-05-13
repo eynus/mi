@@ -1,0 +1,247 @@
+
+
+
+.hero-banner{
+    height: 460px;
+    width: 1226px;
+    overflow: hidden;
+    position: relative;
+}
+.hero-sub{
+    /* border: 1px solid black; */
+    margin-top: 14px;
+}
+
+.banner-ui {
+    position: absolute;
+    left: 0;
+    font-size: 0;
+    width: 7356px;
+}
+.banner-ui a{
+    display: inline-block;
+    
+}
+.banner-ui > a{
+    /* display: block; */
+    z-index: 100;
+}
+.banner-ui img{
+    display: block;
+    width: 1226px;
+    height: 460px;
+    max-width: 100%;
+}
+
+/* .banner-control {
+    position: relative;
+    width: 1226px;
+    height: 460px;
+    
+} */
+.banner-control a{
+    z-index: 99;
+}
+.control-page {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    z-index: 100;
+}
+.control-page > a{
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 5px;
+    border: 2px solid #fff;
+    border-color: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    text-align: left;
+    text-indent: -9999px;
+    background: rgba(0,0,0,0.4);
+}
+.control-page > a:hover ,.control-page > a.active{
+    background: rgba(255,255,255,0.4);
+    border-color: #757575;
+    border-color: rgba(0,0,0,0.4)
+}
+
+.control-rl > a{
+    display: block;
+    position: absolute;
+    top: 50%;
+    z-index: 59;
+    width: 41px;
+    height: 69px;
+    margin-top: -35px;
+    text-indent: -9999px;
+    overflow: hidden;
+    outline: 0;
+    /* background: greenyellow url("../img/icon-slides.png") no-repeat 0 0; */
+}
+.control-rl > a.rl-prev {
+    left: 234px;
+    background: url(../img/icon-slides.png) no-repeat -84px 50%;
+}
+.control-rl > a.rl-next {
+    right: 0;
+    background: url(../img/icon-slides.png) no-repeat -125px 50%;
+}
+.control-rl > a:hover {
+    background-color: rgba(0,0,0,0.4);
+}
+
+.sub-tool {
+    float: left;
+    width: 234px;
+    margin-right: 14px;
+    min-height: 1px;
+}
+.sub-tool ul{
+    margin: 0;
+    padding: 3px;
+    list-style-type: none;
+    font-size: 12px;
+    text-align: center;
+    background: #5f5750;
+}
+.sub-tool li{
+    float: left;
+    width: 70px;
+    height: 82px;
+    padding: 0 3px;
+}
+.sub-tool li a{
+    display: block;
+    padding-top: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.7);
+}
+.sub-tool li a i{
+    display: block;
+    height: 24px;
+    margin-bottom: 4px;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.sub-promo {
+    float: left;
+}
+.sub-promo  li.first{
+    margin-left: 0;
+}
+.sub-promo  li{
+    float: left;
+    margin-left: 15px;
+}
+.sub-promo img{
+    width: 316px;
+    height: 170px;
+}
+
+
+.main{
+    background: #f5f5f5;
+    margin-top: 20px;
+    padding-top: 22px;
+}
+
+.main .main-hd h2{
+    height: 58px;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 200;
+    line-height: 58px;
+    color: #333;
+}
+.main .bd-ad {
+    width: 234px;
+    float: left;
+    margin-left: 14px;
+    min-height: 1px;
+}
+.main .bd-ad > ul{
+    margin: 0 0 -14px -14px;
+    height: 614px;
+}
+.main .bd-ad li{
+    float: left;
+    position: relative;
+    transition: all 0.2s linear ;
+}
+.main .bd-ad li img{
+    height: 614px;
+    width: 234px;
+}
+.main .bd-product{
+    float: left;
+    width: 908px;
+    margin-left: 14px;
+    min-height: 1px;
+}
+.main .bd-product > ul{
+    margin-left: -28px;
+    width: 998px;
+    height: 614px;
+}
+.main .bd-product li{
+    position: relative;
+    z-index: 1;
+    float: left;
+    width: 234px;
+    height: 260px;
+    margin-left: 14px;
+    margin-bottom: 14px;
+    padding: 20px 0;
+    background: #fff;
+    transition: all 0.2s linear ;
+}
+.main .bd-product li:hover,
+.main .bd-ad li:hover{
+    box-shadow: 0 8px 100px 5px rgba(0,0,0,0.1);
+    top: -2px;
+}
+.bd-product .face img{
+    display: block;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+.bd-product .title{
+    margin: 0 10px 2px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: #333;
+}
+.bd-product .desc{
+    margin: 0 10px 10px;
+    height: 18px;
+    font-size: 12px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #b0b0b0;
+}
+.bd-product .price{
+    text-align: center;
+    color: #ff6700;
+}
+.bd-product .price del{
+    color: #b0b0b0;
+}
+.bd-product .flag{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -32px;
+    width: 64px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    color: #fff;
+}
