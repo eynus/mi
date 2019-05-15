@@ -23,9 +23,9 @@ $.extend({
                 Token: this.getToken()//token
             },
             //禁用cookie模式-跨域时使用
-            // xhrFields:{
-            //     withCredentials:true
-            // },
+            xhrFields:{
+                withCredentials:true
+            },
             data: data,
             context: context || this,
         }).then(function (data) {
