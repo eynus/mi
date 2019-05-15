@@ -13,7 +13,7 @@ $.extend({
 
     //ajax-api
     api: function (method, path, data, context) {
-        const HOST = 'https://vip.chanke.xyz/mi';
+        const HOST = 'http://vip.chanke.xyz/mi';
 
         return $.ajax({
             method: method,
