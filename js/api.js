@@ -52,8 +52,8 @@ $.extend({
             return $.Deferred().reject();//确保外面进入fail分支
         });
     },
-    apiGet: function (path) {
-        return this.api('GET', path);
+    apiGet: function (path,context) {
+        return this.api('GET', path,{},context);
     },
     apiPost: function (path, data) {
         return this.api('POST', path, data);

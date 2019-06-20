@@ -81,7 +81,7 @@ $(function () {
     //剔除模板后插入到页面占位置
     $('body').prepend(tpl);
     //请求左侧cat-ajax
-    $.apiGet('/menu?type=left').done(function (result) {
+    $.apiGet('/menu?type=left',{silent:true}).done(function (result) {
         // console.log(result);
 
         let catClone, childrenUl, childClone;
@@ -111,7 +111,7 @@ $(function () {
 
     })
     //请求导航栏数据
-    $.apiGet('/menu?type=top').done(function (result) {
+    $.apiGet('/menu?type=top',{silent:true}).done(function (result) {
         // console.log(result);
         let navClone;
         for (const item of result) {

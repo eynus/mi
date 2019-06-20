@@ -91,7 +91,7 @@
         $(function () {
 
             //请求轮播图数据
-            $.apiGet('/menu?type=carousel').done(function (result) {
+            $.apiGet('/menu?type=carousel',{silent:true}).done(function (result) {
                 // console.log(result);
                 const carousel = $('.hero-banner');
                 const carouselContent = carousel.find('.banner-ui')
@@ -129,7 +129,7 @@
 
 
             // 请求推荐商品数据
-            $.apiGet('/menu?type=index').done(function (result) {
+            $.apiGet('/menu?type=index',{silent:true}).done(function (result) {
                 // console.log(result);
                 const container = $('.main .container'),
                     headTpl = $('.main-hd').remove(),
